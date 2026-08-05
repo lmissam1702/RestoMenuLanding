@@ -23,7 +23,7 @@ const ICONS: IconType[] = [
   HiOutlineLink,
 ];
 
-/** Features — responsive grid (1 col mobile → 3×2 on desktop). */
+/** Features — compact responsive grid (2 cols mobile → 3 across on md+). */
 export default function Features() {
   const t = useTranslations("features");
   const items = t.raw("items") as { title: string; body: string }[];
@@ -37,7 +37,7 @@ export default function Features() {
         whileInView="show"
         viewport={{ once: true, margin: "-100px" }}
         variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
-        className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:gap-5"
       >
         {items.map((f, i) => {
           const Icon = ICONS[i];
@@ -45,13 +45,15 @@ export default function Features() {
             <motion.div
               key={f.title}
               variants={fadeUp}
-              className="glass card-lift rounded-2xl p-6 hover:border-gold/40"
+              className="glass card-lift flex flex-col rounded-2xl p-4 hover:border-gold/40 sm:p-5"
             >
-              <div className="mb-4 grid h-11 w-11 place-items-center rounded-xl border border-gold/30 bg-gold/10">
-                <Icon size={20} className="text-gold" />
+              <div className="mb-3 grid h-9 w-9 place-items-center rounded-lg border border-gold/30 bg-gold/10 sm:h-10 sm:w-10">
+                <Icon size={18} className="text-gold" />
               </div>
-              <h3 className="mb-1.5 text-base font-bold text-heading">{f.title}</h3>
-              <p className="text-sm leading-relaxed text-body">{f.body}</p>
+              <h3 className="mb-1 text-sm font-bold leading-snug text-heading sm:text-base">
+                {f.title}
+              </h3>
+              <p className="text-xs leading-relaxed text-body sm:text-sm">{f.body}</p>
             </motion.div>
           );
         })}

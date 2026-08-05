@@ -21,6 +21,7 @@ const config: Config = {
         body: "var(--text-body)",
         faint: "var(--text-faint)",
         line: "var(--line)",
+        surface: "var(--surface)",
       },
       fontFamily: {
         // Outfit is loaded via next/font in app/[locale]/layout.tsx as --font-outfit

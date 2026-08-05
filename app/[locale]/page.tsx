@@ -1,6 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { locales, type Locale } from "@/i18n";
-import FloatingSilhouettes from "@/components/FloatingSilhouettes";
+import FloatingIcons from "@/components/FloatingIcons";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Problem from "@/components/Problem";
@@ -22,7 +22,7 @@ export default function HomePage({ params: { locale } }: { params: { locale: Loc
 
   return (
     <main className="relative min-h-screen">
-      <FloatingSilhouettes />
+      <FloatingIcons />
 
       <Navbar />
 

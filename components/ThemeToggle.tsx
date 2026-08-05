@@ -19,7 +19,7 @@ export default function ThemeToggle() {
       type="button"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="glass grid h-9 w-9 shrink-0 place-items-center rounded-full text-body transition-colors duration-300 hover:border-gold/40"
+      className="glass grid h-11 w-11 shrink-0 place-items-center rounded-full text-body transition-colors duration-300 hover:border-gold/40 md:h-9 md:w-9"
     >
       {isDark ? (
         <HiOutlineSun size={16} className="text-gold" />

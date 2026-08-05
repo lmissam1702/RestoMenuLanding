@@ -41,13 +41,16 @@ and `next-themes` (dark/light).
 │   ├── Pricing.tsx          # Starter / Pro / Premium
 │   ├── Contact.tsx          # Contact info card + message form
 │   ├── Footer.tsx           # Links, language switcher, theme toggle
-│   ├── FloatingSilhouettes.tsx
+│   ├── FloatingIcons.tsx     # Real icon PNGs floating in the background
 │   ├── SectionHeading.tsx / SectionDivider.tsx
 │   ├── Magnetic.tsx         # Cursor-magnetic wrapper for CTAs
 │   └── motion.ts            # SPRING_SOFT + fadeUp shared variants
-└── public/screenshots/
-    ├── phone/  # Real phone screenshots (phone-1..3.jpg, 1080×2243, ~9:16)
-    └── tv/     # Real TV menu screenshots (tv-1..3.png, 3406×1956, ~16:9)
+├── public/screenshots/
+│   ├── phone/  # Real phone screenshots (phone-1..3.jpg, 1080×2243, ~9:16)
+│   └── tv/     # Real TV menu screenshots (tv-1..3.png, 3406×1956, ~16:9)
+└── public/bg-images/        # Restaurant icon PNGs for the floating background
+    (copied from the repo-root `bg icons/` stash: fork, coffee-cup,
+    coffee-machine, cooking, food-and-restaurant, juce)
 ```
 
 ## 2. Internationalization (next-intl)
@@ -102,8 +105,13 @@ and `next-themes` (dark/light).
   `.glass`, `.btn-gold`, `.btn-ghost`, `.card-lift` — these read the CSS
   vars, so components usually don't need `dark:` variants at all. Use
   `dark:` only for edge cases.
-- **Silhouettes**: color/opacity come from `--shape` (white in dark, gray in
-  light) and `--shape-op` / `--shape-op-hero` (0.04/0.07 dark, 0.1/0.14 light).
+- **Floating background icons** (`components/FloatingIcons.tsx`): 10 instances
+  of real restaurant icon PNGs from `public/bg-images/`, each 30–50px, placed
+  absolutely in a `pointer-events-none fixed inset-0 z-0` overlay. They float
+  with `animate={{ y: [0, -15, 0], x: [0, 5, -5] }}` (unique duration/delay
+  per instance for organic motion) and fade via `--shape-op` /
+  `--shape-op-hero` (0.12/0.16 light, 0.07/0.1 dark). To swap icons, replace
+  files in `public/bg-images/` (source stash: repo-root `bg icons/`).
 
 ## 3b. Fonts & Arabic
 
@@ -140,18 +148,26 @@ and `next-themes` (dark/light).
   only from `lg:`).
 - Solution: phone → arrows → TV become a column; arrows rotate 90° on mobile
   (`rotate-90 lg:rotate-0`) to point down toward the TV, and 180° in RTL.
-- Feature grid: 1 column → 2 (`sm:`) → 3×2 (`lg:`). Pricing: stacked →
+- Feature grid: 2 columns on mobile (`grid-cols-2`) → 3 (`md:grid-cols-3`)
+  with compact cards (small icon, `text-sm` body). Pricing: stacked →
   3 columns (`md:`). Templates/HowItWorks: stacked → side-by-side.
-- Navbar: desktop shows section links (Problem → Contact, from `lg:`) +
-  theme toggle, language switcher and a Contact CTA. Below `lg` a
-  hamburger (`HiOutlineMenu`) opens `MobileMenu`, a spring-animated drawer
-  (slides from the inline-end, mirrored for RTL) with the same section
-  links, language switcher, theme toggle and the Contact CTA. Body scroll
-  locks while open.
-- Contact form is at the end (after Pricing); all CTAs scroll to
+- Navbar: always glass (`glass border-x-0 border-t-0`, `z-[60]`) — solid
+  white + border in light mode, translucent glass in dark. Desktop shows
+  section links (Problem → Contact, from `lg:`) + theme toggle, language
+  switcher and a Contact CTA. Below `lg` a hamburger (`HiOutlineMenu`)
+  opens `MobileMenu`, a **full-screen drawer** (`inset-0`, `z-50`) that slides
+  from the inline-end (mirrored in RTL) with `SPRING_SOFT`. The backdrop
+  (`z-40`) dims the page; the navbar keeps a higher z-index (`z-[60]`) and
+  stays visible **above** the overlay (this fixes the old drawer-on-top-of-
+  navbar bug). Drawer holds a close (X) button, section links, language
+  switcher (active language golds itself), a duplicated theme toggle and the
+  Contact CTA; body scroll is locked while open. Anchored sections sit clear
+  of the fixed navbar via `scroll-padding-top`.
+- Contact form is the last section (after Pricing); all CTAs scroll to
   `#contact`.
-- All buttons/links have ≥44px touch targets (`h-9`+ pills) and
-  `whileTap` feedback on CTAs.
+- All buttons/links have ≥44px touch targets (hamburger + theme toggle are
+  `h-11` on mobile, `h-9` on `md:`; pills use `py-3`) and `whileTap`
+  feedback on CTAs.
 
 ## 5. Solution section & screenshots
 
