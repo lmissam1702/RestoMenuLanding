@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { pub } from "@/lib/basePath";
 
 /** One floating background icon: real PNG from public/bg-images/. */
 type IconSpec = {
@@ -16,16 +17,16 @@ type IconSpec = {
 // centered text, headings and CTAs. Positions use logical start/end so the
 // composition mirrors correctly in RTL.
 const ICONS: IconSpec[] = [
-  { src: "/bg-images/fork.png", size: 60, className: "start-[5%] top-[10%]", duration: 24, delay: 0 },
-  { src: "/bg-images/coffee-cup.png", size: 48, className: "end-[7%] top-[18%]", duration: 28, delay: 1.1 },
-  { src: "/bg-images/food-and-restaurant.png", size: 60, className: "start-[8%] top-[38%]", duration: 21, delay: 2.3 },
-  { src: "/bg-images/cooking.png", size: 52, className: "end-[10%] top-[46%]", duration: 26, delay: 0.6 },
-  { src: "/bg-images/juce.png", size: 54, className: "start-[4%] top-[62%]", duration: 23, delay: 1.8 },
-  { src: "/bg-images/coffee-machine.png", size: 60, className: "end-[6%] top-[74%]", duration: 29, delay: 3 },
-  { src: "/bg-images/fork.png", size: 46, className: "end-[16%] top-[30%]", duration: 22, delay: 2.8 },
-  { src: "/bg-images/coffee-cup.png", size: 42, className: "start-[12%] top-[84%]", duration: 25, delay: 0.9 },
-  { src: "/bg-images/food-and-restaurant.png", size: 48, className: "end-[4%] top-[88%]", duration: 27, delay: 2.1 },
-  { src: "/bg-images/juce.png", size: 40, className: "start-[22%] top-[26%]", duration: 30, delay: 4 },
+  { src: pub("/bg-images/fork.png"), size: 60, className: "start-[5%] top-[10%]", duration: 24, delay: 0 },
+  { src: pub("/bg-images/coffee-cup.png"), size: 48, className: "end-[7%] top-[18%]", duration: 28, delay: 1.1 },
+  { src: pub("/bg-images/food-and-restaurant.png"), size: 60, className: "start-[8%] top-[38%]", duration: 21, delay: 2.3 },
+  { src: pub("/bg-images/cooking.png"), size: 52, className: "end-[10%] top-[46%]", duration: 26, delay: 0.6 },
+  { src: pub("/bg-images/juce.png"), size: 54, className: "start-[4%] top-[62%]", duration: 23, delay: 1.8 },
+  { src: pub("/bg-images/coffee-machine.png"), size: 60, className: "end-[6%] top-[74%]", duration: 29, delay: 3 },
+  { src: pub("/bg-images/fork.png"), size: 46, className: "end-[16%] top-[30%]", duration: 22, delay: 2.8 },
+  { src: pub("/bg-images/coffee-cup.png"), size: 42, className: "start-[12%] top-[84%]", duration: 25, delay: 0.9 },
+  { src: pub("/bg-images/food-and-restaurant.png"), size: 48, className: "end-[4%] top-[88%]", duration: 27, delay: 2.1 },
+  { src: pub("/bg-images/juce.png"), size: 40, className: "start-[22%] top-[26%]", duration: 30, delay: 4 },
 ];
 
 /**

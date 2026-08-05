@@ -15,6 +15,7 @@ import Image from "next/image";
 import { HiOutlineArrowRight, HiOutlinePlay } from "react-icons/hi";
 import Magnetic from "@/components/Magnetic";
 import { SPRING_SOFT } from "@/components/motion";
+import { pub } from "@/lib/basePath";
 
 const headlineContainer: Variants = {
   hidden: {},
@@ -28,16 +29,16 @@ const headlineLetter: Variants = {
 
 // Real phone screenshots served from public/screenshots/phone/ (3 images).
 const PHONE_IMAGES = [
-  "/screenshots/phone/phone-1.jpg",
-  "/screenshots/phone/phone-2.jpg",
-  "/screenshots/phone/phone-3.jpg",
+  pub("/screenshots/phone/phone-1.jpg"),
+  pub("/screenshots/phone/phone-2.jpg"),
+  pub("/screenshots/phone/phone-3.jpg"),
 ];
 
 // Real TV screenshots served from public/screenshots/tv/ (3 images).
 const TV_IMAGES = [
-  "/screenshots/tv/tv-1.png",
-  "/screenshots/tv/tv-2.png",
-  "/screenshots/tv/tv-3.png",
+  pub("/screenshots/tv/tv-1.png"),
+  pub("/screenshots/tv/tv-2.png"),
+  pub("/screenshots/tv/tv-3.png"),
 ];
 
 /** Hero — staggered headline, CTAs, floating phone + TV mockups (±2° tilt). */
