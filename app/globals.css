@@ -2,26 +2,182 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------------------------------------------ */
+/*  Design tokens — light is the base, .dark overrides                 */
+/* ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Gold accent — unified #F5B041 in both themes for brand consistency */
+  --gold: #f5b041;
+  --gold-rgb: 245 176 65;
+  --gold-ink: #ffffff;
+  --gold-glow: rgba(245, 176, 65, 0.35);
+
+  /* Surfaces (light: solid white cards, distinct border) */
+  --surface: #ffffff;
+  --line: #e5e7eb;
+
+  /* Text */
+  --text-heading: #111827;
+  --text-body: #4b5563;
+  --text-faint: #9ca3af;
+
+  /* Page background (light: soft warm gray + faint amber tint) */
+  --bg: #f3f4f6;
+  --bg-image: radial-gradient(
+      1100px 600px at 12% -8%,
+      rgba(245, 158, 11, 0.05),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #f7f7f5 0%, #eef0f3 100%);
+
+  /* Silhouette shapes (light: pale gray, slightly more visible) */
+  --shape: #6b7280;
+  --shape-op: 0.1;
+  --shape-op-hero: 0.14;
+
+  --scroll-track: #e5e7eb;
+  --selection: rgba(245, 176, 65, 0.3);
+
+  /* Card depth — light theme is NOT flat: soft shadows on white cards.
+     Dark theme keeps the crisp glassmorphic look (no shadows). */
+  --shadow-card: 0 1px 2px rgba(17, 24, 39, 0.05), 0 12px 32px -18px rgba(17, 24, 39, 0.18);
+  --shadow-card-lg: 0 2px 4px rgba(17, 24, 39, 0.06), 0 22px 48px -24px rgba(17, 24, 39, 0.28);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --gold: #f5b041;
+  --gold-rgb: 245 176 65;
+  --gold-ink: #1a1205;
+  --gold-glow: rgba(245, 176, 65, 0.6);
+
+  --surface: rgba(255, 255, 255, 0.05);
+  --line: rgba(255, 255, 255, 0.1);
+
+  --text-heading: #ffffff;
+  --text-body: #e5e7eb;
+  --text-faint: #9ca3af;
+
+  /* Obsidian gradient with amber glows bleeding in from the edges */
+  --bg: #0b0c10;
+  --bg-image: radial-gradient(
+      1100px 600px at 12% -8%,
+      rgba(245, 176, 65, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(900px 500px at 88% 12%, rgba(245, 176, 65, 0.05), transparent 55%),
+    linear-gradient(180deg, #0b0c10 0%, #14171f 100%);
+
+  --shape: #ffffff;
+  --shape-op: 0.04;
+  --shape-op-hero: 0.07;
+
+  --scroll-track: #0b0c10;
+  --selection: rgba(245, 176, 65, 0.35);
+
+  --shadow-card: none;
+  --shadow-card-lg: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Arabic renders with a dedicated font (Noto Naskh Arabic, loaded in the
+   layout) so letters join properly; everything else uses Outfit. */
+html[lang="ar"],
+html[lang="ar"] body {
+  font-family: var(--font-arabic), var(--font-outfit), system-ui, sans-serif;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  color: var(--text-body);
+  background-color: var(--bg);
+  background-image: var(--bg-image);
+  background-attachment: fixed;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+::selection {
+  background: var(--selection);
+  color: var(--text-heading);
+}
+
+/* Thin, unobtrusive scrollbar to match the crisp-border aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scroll-track);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 176, 65, 0.35);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 176, 65, 0.55);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reusable component classes                                         */
+/* ------------------------------------------------------------------ */
+@layer components {
+  /* Glassmorphic card: translucent surface + backdrop blur + hairline border.
+     In light mode the same class becomes a solid white card with a soft
+     shadow (see --shadow-card) — depth without dark-mode shadows. */
+  .glass {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Card hover lift — light theme only (--shadow-card-lg is `none` in dark) */
+  .card-lift {
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-lg);
+  }
+
+  /* Gold pill button — solid gold fill per design spec */
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-full
+      bg-gold px-7 py-3 font-semibold text-gold-ink transition-all
+      duration-300;
+    box-shadow: 0 0 0 1px var(--gold-glow) inset;
+  }
+  .btn-gold:hover {
+    background: var(--gold);
+    filter: brightness(1.08);
+    box-shadow:
+      0 0 0 1px var(--gold-glow) inset,
+      0 8px 32px -8px var(--gold-glow);
+  }
+
+  /* Outlined button — gold text + thin gold border, soft glow on hover */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border
+      border-gold/40 px-7 py-3 font-semibold text-gold transition-all
+      duration-300;
+  }
+  .btn-ghost:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 28px -6px var(--gold-glow);
+  }
+
+  /* Text color helpers */
+  .text-heading {
+    color: var(--text-heading);
+  }
+  .text-body {
+    color: var(--text-body);
+  }
+  .text-faint {
+    color: var(--text-faint);
   }
 }
